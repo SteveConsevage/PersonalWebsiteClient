@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Aggregated SportsBook Odds</title>
+<link type="text/css" rel="stylesheet" href="./css/sportsbooks.css">
+<script type="text/javascript" src="./js/sportsbooks.js" ></script>
+<style type="text/css">
+#container {height: 100%; width:100%; font-size: 0;}
+#left, #middleleft, #middleright, #right {display: inline-block; *display: inline; zoom: 1; vertical-align: top; font-size: 16px;}
+#left {width: 10%; }
+#middleleft {width: 30%;}
+#middleright {width: 30%;}
+#right {width: 30%; }
+</style>
+</head>
+<body>
+    <input type="button" value="Details" style="float: right;" onclick="location.href='/sportsbooksdetails'">
+    <br>
+    <h1 class="center_horizontal_text">Odds From Online Sportsbooks</h1>
+    <h4 class="center_horizontal_text">Select all desired options and submit</h4>
+    <form name="selectionForm" method="POST" action='https://www.steveconsevage.com/api/sportsbookoddslive/fetchSelection'>
+    <div id="container">
+        <div id="left"></div>
+        <div id="middleleft">
+            <div>
+                <h3>Sports Books</h3>
+            </div>            
+            <div style="width:200px;height:150px;line-height:1.5em;overflow:scroll;padding:5px;" class="box_color">
+                <input type="checkbox" id="draftkings_form_option" name="sportsbook" value="draftkings" checked> DraftKings
+                <br>
+                <input type="checkbox" id="fanduel_form_option" name="sportsbook" value="fanduel" checked> FanDuel
+                <br>
+            </div>
+        </div>
+        <div id="middleright">
+            <h3>Sports</h3>
+            <div style="width:200px;height:150px;line-height:1.5em;overflow:scroll;padding:5px;" class="box_color">
+                <input type="checkbox" id="nba_form_option" name="category" value="nba"> NBA
+                <br>
+                <input type="checkbox" id="nfl_form_option" name="category" value="nfl" checked> NFL
+                <br>
+                <input type="checkbox" id="nhl_form_option" name="category" value="nhl"> NHL
+                <br>
+            </div>
+        </div>
+        <div id="right">
+            <h3>Offers</h3>
+            <div style="width:200px;height:150px;line-height:1.5em;overflow:scroll;padding:5px;" class="box_color">
+                <input type="checkbox" id="moneyline_form_option" name="offer" value="moneyline" checked> Money Line
+                <br>
+                <input type="checkbox" id="total_form_option" name="offer" value="total"> Total
+                <br>
+                <input type="checkbox" id="totalAlternate_form_option" name="offer" value="totalAlternate"> Total (alternate)
+                <br>
+                <input type="checkbox" id="spread_form_option" name="offer" value="spread"> Spread
+                <br>
+                <input type="checkbox" id="spreadAlternate_form_option" name="offer" value="spreadAlternate"> Spread (alternate)
+                <br>
+            </div>
+        </div>  
+    </div> 
+    <br>
+    <br>
+    <div class="center_horizontal_absolute">
+        <input type="submit" name="submit" value="Get The Odds">
+    </div>         
+</form>
+<br>
+<br>
+<div id="offerDisplay"></div>
+</body>
+</html>
