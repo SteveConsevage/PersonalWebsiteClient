@@ -2,6 +2,7 @@ const containerIdStr = 'containerId';
 const columnLabelsMoneyline = ['Condition', 'Draftkings','Fanduel'];
 const columnLabelsSpread = ['Line'].concat(columnLabelsMoneyline);
 const moneylineString = 'moneyline';
+const dtOptions = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'};
 var requestLoop = null;
 var allowFormSubmit = true;
 
@@ -13,6 +14,7 @@ window.onload = function () {
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
+
 
 async function submitted(event){
     let curEvent = event;    
@@ -33,6 +35,8 @@ async function submitted(event){
     await sleep(1000);
     allowFormSubmit = true;
 }
+
+
 
 function apiFetch( event ) {
     let fetcher = fetch(event.target.action, {
@@ -94,20 +98,36 @@ class OfferData {
         return categoryContainer
     }
 
-    createEventContainer( categoryIdString, eventIdString, eventDisplayName, eventStartDate, eventStartTime ) {
+    createEventContainer( categoryIdString, eventIdString, eventDisplayName, eventStartDateTime, eventStatus ) {
         var eventContainer = document.createElement('div');
-        var eventTitle = document.createElement('h4');
+        var eventTitleContainer = document.createElement('h4');
+        var eventTitle = document.createElement('span');
+        var eventLive = document.createElement('span');
         var categoryContainer = document.getElementById( categoryIdString );
         eventContainer.id = eventIdString;
 
-        //let clientEventDisplayname = eventDisplayName.toUpperCase();
-        //add dateTime support here
+        let clientEventDisplayTitle;
+        // add eventStatus support
         // if eventStatus = live -> show live
         // else: show startDateTime
-        
-        eventTitle.innerHTML = eventDisplayName.toUpperCase();
-        eventTitle.classList.add('center_horizontal_text');
-        eventContainer.appendChild(eventTitle);
+        if (eventStartDateTime !== null) {
+            let dateTime = new Date(eventStartDateTime).toLocaleString('en-US', dtOptions);
+            clientEventDisplayTitle = eventDisplayName.toUpperCase().concat('    --    ', dateTime);
+        } else {
+            clientEventDisplayTitle = eventDisplayName.toUperrCase();
+        }
+        console.log(eventStatus);
+        if (eventStatus == 'live' ){
+            eventLive.innerHTML = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' +'LIVE';
+        }
+      
+        eventTitle.innerHTML = clientEventDisplayTitle;
+        eventTitleContainer.classList.add('center_horizontal_text');
+        //eventTitle.classList.add('center_horizontal_text');
+        eventLive.classList.add('live_text_box');
+        eventContainer.appendChild(eventTitleContainer);
+        eventTitleContainer.appendChild(eventTitle);
+        eventTitleContainer.appendChild(eventLive);
         categoryContainer.appendChild(eventContainer);
         return eventContainer
     }
@@ -185,7 +205,7 @@ class OfferData {
             }
             if ( this.displayContainers[category][eventId] == undefined) {
                 this.displayContainers[category][eventId] = {};
-                this.createEventContainer( category, eventId, datum.eventDisplayName , datum.eventStartDate, datum.eventStartTime);
+                this.createEventContainer( category, eventId, datum.eventDisplayName , datum.eventStartDateTime, datum.eventStatus);
             }
             //offerTypeId = eventId + '_' + offerType;
             offerTypeId = datum.offerTypeId;
